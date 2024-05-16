@@ -2,7 +2,7 @@ import torch
 from torch import nn
 from einops.layers.torch import Rearrange
 
-from ..utils import EEGModuleMixin, deprecated_args, Ensure4d
+from ...utils.model_utils import EEGModuleMixin, deprecated_args, Ensure4d
 
 
 class _DepthwiseConv2d(torch.nn.Conv2d):

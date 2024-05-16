@@ -7,8 +7,8 @@ import torch.backends.cudnn as cudnn
 
 from dataloaders.base import get_dataset
 from utils.setup_utils import get_device
-from trainers.offline import pretraining, eval
-from trainers.online import online_learning
+from bg_spcl.trainers.offline import pretraining, eval
+from bg_spcl.trainers.online import online_learning
 
 
 '''Argparse'''

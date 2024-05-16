@@ -10,7 +10,7 @@ import torch.nn as nn
 from torch.utils.data import DataLoader
 
 from models.base import get_model
-from utils.spcl import main_spcl
+from spcl import main_spcl
 
 
 def pretraining(args, dataset):

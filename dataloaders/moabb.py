@@ -5,7 +5,7 @@ from sklearn import preprocessing
 import torch 
 import torch.utils.data as Data
 
-from utils.state import get_score
+from bg_spcl.bg import compute_bg_scores
 
 
 def BNCI2014004(args):
@@ -30,7 +30,7 @@ def BNCI2014004(args):
     le = preprocessing.LabelEncoder()
     y = le.fit_transform(y)
 
-    c = get_score(args, X) 
+    c = compute_bg_scores(args, X) 
 
     y = torch.from_numpy(y.reshape(-1, )).to(torch.long)
     X = torch.from_numpy(X).to(torch.float32)

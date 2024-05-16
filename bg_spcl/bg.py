@@ -2,7 +2,7 @@ import numpy as np
 from scipy.fft import fft, fftfreq
 
 
-def at_ratio(segments, args): 
+def compute_at_ratio(segments, args): # compute Alpha-Theta ratio of the given EEG segment
 
     freqs = fftfreq(args.sampling_rate, 1 / args.sampling_rate)
     alpha_indices = (freqs >= 8) & (freqs < 13)
@@ -23,7 +23,7 @@ def at_ratio(segments, args):
     return mean_c_score
 
 
-def get_score(args, X): 
+def compute_bg_scores(args, X): # compute the normalized user state score across trials
 
     scores_per_trial, indices_to_remove = [], []
     for ind, trial in enumerate(X):
@@ -33,7 +33,7 @@ def get_score(args, X):
             seg = trial[:, (s+1)*args.sampling_rate: (s+2)*args.sampling_rate]
             segments.append(seg)
             
-        mean_c_score = at_ratio(segments, args)
+        mean_c_score = compute_at_ratio(segments, args)
             
         scores_per_trial.append(mean_c_score)
 
