@@ -59,9 +59,8 @@ def pretraining(args, dataset):
             if val_loss < best_loss:
                 best_loss = val_loss
                 best_model = model.state_dict()
-                print(f'Fold: {fold}, Epoch: {epoch}, Loss: {val_loss}, Acc: {acc}')
-            
-            
+        
+        print(f'Fold: {fold}, Loss: {val_loss}, Acc: {acc}')            
         fname = args.LOG_NAME + f'P{args.target_subject}_fold_{fold}_best_model.pth'
         torch.save(best_model, fname)
 

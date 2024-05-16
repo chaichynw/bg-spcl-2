@@ -18,6 +18,7 @@ def BNCI2014004(args):
     test_indices = [i for i, (session, subject) in enumerate(zip(meta['session'], meta['subject'])) if session == '0train' and subject == args.target_subject+1]
 
     if not args.is_test:
+        print('\n Train dataset is loaded \n')
         X = X[train_indices]
         y = y[train_indices]
     else:

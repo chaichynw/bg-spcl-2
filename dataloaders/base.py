@@ -1,7 +1,9 @@
 from dataloaders.moabb import BNCI2014004
 
 
-def get_dataset(args):
+def get_dataset(args, is_test):
+    
+    args['is_test'] = True if is_test else False
 
     if args.data == 'BNCI2014004':
         args.paradigm = 'MI'

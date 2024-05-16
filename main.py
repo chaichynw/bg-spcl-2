@@ -1,4 +1,4 @@
-import yaml
+import os, yaml
 from easydict import EasyDict
 
 import torch
@@ -20,8 +20,9 @@ parser.add_argument('--is_test', type=bool, default=False)
 parser.add_argument('--online_update', type=bool, default=False)
 args = parser.parse_args()
 
+
 # Config setting
-with open(f'configs/{aargs.config_name}.yaml') as file:
+with open(f'configs/{args.config_name}.yaml') as file:
     config = yaml.load(file, Loader=yaml.FullLoader)
     cfg = EasyDict(config)
 
@@ -30,7 +31,7 @@ cfg['online_update'] = args.online_update
 
 # Set device
 if torch.cuda.is_available():
-    os.environ['CUDA_VISIBLE_DEVICES'] = aargs.gpu_num
+    os.environ['CUDA_VISIBLE_DEVICES'] = args.gpu_num
 cfg['device'] = get_device(args.gpu_num)
 cudnn.benchmark = True
 cudnn.fastest = True
@@ -39,19 +40,20 @@ cudnn.deterministic = True
 
 if __name__ == '__main__':
 
-    dataset = get_dataset(cfg)
+    trainset = get_dataset(cfg, is_test=False)
+    testset = get_dataset(cfg, is_test=True)
 
     # Offline
     if not cfg.online_update:
 
-        if not cfg.is_test:
-            pretraining(cfg, dataset)
+        if not args.is_test:
+            pretraining(cfg, trainset)
 
         else:
-            test_acc_dict = eval(cfg, dataset)
+            test_acc_dict = eval(cfg, testset)
             print(test_acc_dict)
             print(f'Average test accuracy: {np.mean(list(test_acc_dict.values()))}')
             print(f'Std test accuracy: {np.std(list(test_acc_dict.values()))}')
     # Online
     else:
-        online_learning(cfg, dataset)
+        online_learning(cfg, trainset, testset)

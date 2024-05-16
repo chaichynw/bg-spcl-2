@@ -6,15 +6,9 @@ from sklearn.metrics import accuracy_score
 
 import torch
 import torch.nn as nn
-import torch.backends.cudnn as cudnn
 import torch.optim as optim
-from torch.utils.data import DataLoader
 
-from dataloaders.base import get_dataset
 from models.base import get_model
-from utils.spcl import test_spcl, main_spcl, Entropy
-from utils.setup_utils import get_device, get_log_name
-from utils import utils
 
 
 def incre_update(args, test_time, data_cum, state_scores, model, cali_loader, optimizer, criterion):
