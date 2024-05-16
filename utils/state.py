@@ -37,38 +37,7 @@ def get_score(args, X):
             
         scores_per_trial.append(mean_c_score)
 
-    # min max normalization
-    scores_per_trial = (scores_per_trial - np.min(scores_per_trial)) / (np.max(scores_per_trial) - np.min(scores_per_trial))
-    return scores_per_trial
-
-
-# calculate the alpha-theta ratio for each trial
-def get_score(args, X):
-
-    freqs = fftfreq(args.sampling_rate, 1 / args.sampling_rate)
-    alpha_indices = (freqs >= 8) & (freqs < 13)
-    theta_indices = (freqs >= 4) & (freqs < 8)
-
-    scores_per_trial = []
-    for ind, trial in enumerate(X):
-        c_socres = []
-
-        for s in range(args.trial_len - 1):
-            seg = trial[:, (s+1)*args.sampling_rate: (s+2)*args.sampling_rate]
-            fft_results = fft(seg)
-            psd = np.abs(fft_results) ** 2
-
-            alpha_power = np.mean(psd[:, alpha_indices])
-            theta_power = np.mean(psd[:, theta_indices])
-
-            c_score = alpha_power / theta_power
-            c_socres.append(c_score)
-        
-        mean_c_score = np.mean(c_socres)
-        scores_per_trial.append(mean_c_score)
-
-    # min max normalization
-    scores_per_trial = np.array(scores_per_trial)
+    # min-max normalization
     scores_per_trial = (scores_per_trial - np.min(scores_per_trial)) / (np.max(scores_per_trial) - np.min(scores_per_trial))
 
     return scores_per_trial
